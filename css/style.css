@@ -1,0 +1,19 @@
+.navbar-color{
+    background-color: #20c997;
+}
+
+.target-input{
+    width: 200px;
+}
+
+.btn-target{
+    font-size: 25px;
+    color: #20c997;
+}
+
+.btn-applied{
+    font-size: 16px;
+    color: #20c997;
+    letter-spacing: 2px;
+    line-height: 60px;
+}

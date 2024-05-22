@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="images/favicon.ico" title="Favicon" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <title>Job Application Counter</title>
+  </head>
+  <body>
+    <div class="container-fluid px-0">
+      <header>
+        <nav
+          class="navbar sticky-top navbar-expand-lg navbar-light navbar-color rounded-bottom"
+        >
+          <div class="container-fluid justify-content-center text-center py-1">
+            <a class="navbar-brand fs-3 ">Job Application Counter</a>
+          </div>
+        </nav>
+      </header>
+      <section id="main">
+        <div class="justify-content-center text-center p-5">
+          <p class="fs-4">Set Job applications Target</p>
+          <form class="form-group row" id="target-form">
+            <div class="justify-content-center text-center input-group my-2">
+              <div class="col-xs-3">
+                <input
+                  class="form-control target-input"
+                  placholder="Enter target"
+                  type="number"
+                  id="target-number"
+                />
+              </div>
+              <div class="col-xs-3">
+                <input type="submit" class="btn btn-outline-primary" value="set"/>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section id="counter mt-3">
+        <div class="justify-content-center text-center">
+
+              <h3>Target</h3>
+              <h4 id="target-display">0</h4>
+              <h3>Applied</h3>
+              <h4 id="applied-display">0</h4>
+          </div>
+        <div class="mt-5 justify-content-center text-center">
+            <button class="btn btn-outline-success btn-applied" id="applied-click">Applied</button>
+            <button class="btn btn-outline-danger btn-applied" id="delete-click">Delete</button>
+        </div>
+        <div class="my-2 justify-content-center text-center">
+            <button class="btn btn-outline-secondary" id="reset-click">Reset</button>
+        </div>
+        </div>
+      </section>
+    </div>
+    <script src="/main.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
