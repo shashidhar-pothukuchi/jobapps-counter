@@ -64,6 +64,7 @@ function initiate() {
 }
 
 window.onload = initiate;
+// chrome.browserAction.setIcon({ path: "/main-icon.ico" });
 
 form.addEventListener("submit", settarget);
 applied.addEventListener("click", addCounter);
