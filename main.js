@@ -6,6 +6,7 @@ let reseted = document.getElementById("reset-click");
 function updateTarget(value) {
   document.getElementById("target-display").innerHTML = value;
   localStorage.setItem("target", value);
+  updateProgress(getApplied());
 }
 
 function getTarget() {
