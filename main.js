@@ -21,6 +21,15 @@ function getApplied() {
   return document.getElementById("applied-display").innerHTML;
 }
 
+function updateProgress(value) {
+  let bar = value * (100 / getTarget());
+  document.getElementById("target-bar").setAttribute("aria-valuenow", bar);
+  document
+    .getElementById("target-bar")
+    .setAttribute("aria-valuemax", getTarget());
+  document.getElementById("target-bar").setAttribute("style", `width:${bar}%`);
+}
+
 function settarget(e) {
   let counter = document.getElementById("target-number").value;
   console.log(counter);
@@ -29,15 +38,20 @@ function settarget(e) {
 }
 
 function addCounter() {
-  updateApplied(Number(getApplied()) + 1);
+  let cur = Number(getApplied()) + 1;
+  updateApplied(cur);
+  updateProgress(cur);
 }
 
 function deleteCounter() {
-  updateApplied(Number(getApplied()) - 1);
+  let cur = Number(getApplied()) - 1 >= 0 ? Number(getApplied()) - 1 : 0;
+  updateApplied(cur);
+  updateProgress(cur);
 }
 
 function resetCounter() {
   updateApplied(0);
+  updateProgress(0);
 }
 
 function initiate() {
@@ -45,6 +59,7 @@ function initiate() {
   let appliedVal = localStorage.getItem("applied");
   updateTarget(targetVal === null ? 0 : targetVal);
   updateApplied(isNaN(appliedVal) ? 0 : appliedVal);
+  updateProgress(getApplied());
 }
 
 window.onload = initiate;
