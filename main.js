@@ -12,7 +12,7 @@ async function updateTarget(value) {
 }
 
 async function getTarget() {
-  chrome.storage.local.get(["target"], (res) => {
+  await chrome.storage.local.get(["target"], (res) => {
     return res.target;
   });
 }
@@ -93,17 +93,18 @@ function resetCounter() {
 
 function initiate() {
   chrome.storage.local.get(["target", "applied", "totalJobs"], async (res) => {
-    console.log("Main", res.target, res.applied, res.totalJobs);
+    // console.log("Main", res.target, res.applied, res.totalJobs);
     await updateTarget(res.target === null ? 0 : res.target);
     await updateApplied(isNaN(res.applied) ? 0 : res.applied);
     await updateTotalJobs(isNaN(res.totalJobs) ? 0 : res.totalJobs);
-    updateProgress(res.applied);
+    await updateProgress(res.applied);
   });
 }
 
 window.onload = initiate;
 
 window.onfocus = initiate;
+
 form.addEventListener("submit", settarget);
 applied.addEventListener("click", addCounter);
 deleted.addEventListener("click", deleteCounter);

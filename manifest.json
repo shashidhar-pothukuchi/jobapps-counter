@@ -16,7 +16,13 @@
       "suggested_key": {
         "windows": "Ctrl+B"
       },
-      "description": "Activate feature when Ctrl+B is pressed"
+      "description": "Increment when Ctrl+B is pressed"
+    },
+    "decrement": {
+      "suggested_key": {
+        "windows": "Alt+B"
+      },
+      "description": "Decrement when Alt+B is pressed"
     }
   }
 }
