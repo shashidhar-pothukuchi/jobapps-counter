@@ -1,10 +1,22 @@
 {
-    "manifest_version": 3,
-    "name": "JobApp Counter",
-    "description": "Base Level Extension",
-    "version": "1.0",
-    "action": {
-      "default_popup": "index.html",
-      "default_icon": "main-icon.ico"
+  "manifest_version": 3,
+  "name": "JobApp Counter",
+  "description": "Extension to count the number of jobs applied per day",
+  "permissions": ["storage", "activeTab", "scripting","tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "version": "2.0",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "images/icon.png"
+  },
+  "commands": {
+    "increment": {
+      "suggested_key": {
+        "windows": "Ctrl+B"
+      },
+      "description": "Activate feature when Ctrl+B is pressed"
     }
   }
+}
