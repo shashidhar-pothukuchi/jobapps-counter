@@ -5,28 +5,18 @@ let reseted = document.getElementById("reset-click");
 
 // Setter getters for Target jobs
 async function updateTarget(value) {
-  chrome.storage.local.set({ target: value }, () => {
+  chrome.storage.local.set({ target: value }, async () => {
     document.getElementById("target-display").innerHTML = value;
-    updateProgress(getApplied());
-  });
-}
-
-async function getTarget() {
-  await chrome.storage.local.get(["target"], (res) => {
-    return res.target;
+    chrome.storage.local.get(["cdate", "target"], async (res) => {
+      await updateProgress(res.cdate.applied, res.target);
+    });
   });
 }
 
 // Setter getters for Applied jobs
-async function updateApplied(value) {
-  chrome.storage.local.set({ applied: value }, () => {
+async function updateApplied(todate, value) {
+  chrome.storage.local.set({ cdate: { date: todate, applied: value } }, () => {
     document.getElementById("applied-display").innerHTML = value;
-  });
-}
-
-function getApplied() {
-  chrome.storage.local.get(["applied"], (res) => {
-    return res.applied;
   });
 }
 
@@ -37,23 +27,13 @@ async function updateTotalJobs(value) {
   });
 }
 
-function getTotalJobs() {
-  chrome.storage.local.get(["totalJobs"], (res) => {
-    return res.totalJobs;
-  });
-}
-
-async function updateProgress(value) {
-  chrome.storage.local.get(["target"], (res) => {
-    let bar = value * (100 / res.target);
-    document.getElementById("target-bar").setAttribute("aria-valuenow", bar);
-    document
-      .getElementById("target-bar")
-      .setAttribute("aria-valuemax", res.target);
-    document
-      .getElementById("target-bar")
-      .setAttribute("style", `width:${bar}%`);
-  });
+async function updateProgress(value, target) {
+  let bar = value * (100 / target);
+  console.log("called update progress->", bar);
+  document.getElementById("target-bar").setAttribute("aria-valuenow", bar);
+  document.getElementById("target-bar").setAttribute("aria-valuemax", target);
+  document.getElementById("target-bar").setAttribute("style", `width:${bar}%`);
+  return;
 }
 
 async function settarget(e) {
@@ -65,10 +45,10 @@ async function settarget(e) {
 
 function addCounter() {
   // let cur = Number(getApplied()) + 1;
-  chrome.storage.local.get(["applied"], async (res) => {
-    console.log(res.applied);
-    await updateApplied(res.applied + 1);
-    await updateProgress(res.applied + 1);
+  chrome.storage.local.get(["cdate", "target"], async (res) => {
+    console.log(res.cdate.applied);
+    await updateApplied(res.cdate.date, res.cdate.applied + 1);
+    await updateProgress(res.cdate.applied + 1, res.target);
     chrome.storage.local.get(["totalJobs"], async (res2) => {
       await updateTotalJobs(res2.totalJobs + 1);
     });
@@ -76,28 +56,52 @@ function addCounter() {
 }
 
 function deleteCounter() {
-  chrome.storage.local.get(["applied", "totalJobs"], async (res) => {
-    if (res.applied > 0) {
+  chrome.storage.local.get(["cdate", "totalJobs", "target"], async (res) => {
+    if (res.cdate.applied > 0) {
       await updateTotalJobs(res.totalJobs - 1 >= 0 ? res.totalJobs - 1 : 0);
     }
-    let cur = res.applied - 1 >= 0 ? res.applied - 1 : 0;
-    await updateApplied(cur);
-    await updateProgress(cur);
+    let cur = res.cdate.applied - 1 >= 0 ? res.cdate.applied - 1 : 0;
+    await updateApplied(res.cdate.date, cur);
+    await updateProgress(cur, res.target);
+  });
+}
+
+function deletenCounter(value) {
+  chrome.storage.local.get(["cdate", "totalJobs", "target"], async (res) => {
+    if (res.cdate.applied > 0) {
+      await updateTotalJobs(
+        res.totalJobs - value >= 0 ? res.totalJobs - value : 0
+      );
+    }
+    let cur = res.cdate.applied - value >= 0 ? res.cdate.applied - value : 0;
+    await updateApplied(res.cdate.date, cur);
+    await updateProgress(cur, res.target);
   });
 }
 
 function resetCounter() {
-  updateApplied(0);
-  updateProgress(0);
+  chrome.storage.local.get(["cdate"], async (res) => {
+    deletenCounter(res.cdate.applied);
+    updateProgress(0);
+  });
 }
 
 function initiate() {
-  chrome.storage.local.get(["target", "applied", "totalJobs"], async (res) => {
+  console.log("called update dom");
+  chrome.storage.local.get(["target", "cdate", "totalJobs"], async (res) => {
     // console.log("Main", res.target, res.applied, res.totalJobs);
+    if (!res.cdate) {
+      let today = new Date().toLocaleDateString();
+      chrome.storage.local.set({ cdate: { date: today, applied: 0 } });
+    }
+
     await updateTarget(res.target === null ? 0 : res.target);
-    await updateApplied(isNaN(res.applied) ? 0 : res.applied);
+    await updateApplied(
+      res.cdate.date,
+      isNaN(res.cdate.applied) ? 0 : res.cdate.applied
+    );
     await updateTotalJobs(isNaN(res.totalJobs) ? 0 : res.totalJobs);
-    await updateProgress(res.applied);
+    await updateProgress(res.cdate.applied, res.target);
   });
 }
 
