@@ -49,7 +49,10 @@ addCount = () => {
     chrome.storage.local.set({
       cdate: { date: res.cdate.date, applied: res.cdate.applied + 1 },
     });
+<<<<<<< HEAD
     chrome.storage.local.set({ totalJobs: res.totalJobs + 1 });
+=======
+>>>>>>> 742dde2c613e202cc6ada29eccf3ebd57b0337fa
   });
 };
 

@@ -69,9 +69,15 @@ function deleteCounter() {
 function deletenCounter(value) {
   chrome.storage.local.get(["cdate", "totalJobs", "target"], async (res) => {
     if (res.cdate.applied > 0) {
+<<<<<<< HEAD
       // await updateTotalJobs(
       //   res.totalJobs - value >= 0 ? res.totalJobs - value : 0
       // );
+=======
+      await updateTotalJobs(
+        res.totalJobs - value >= 0 ? res.totalJobs - value : 0
+      );
+>>>>>>> 742dde2c613e202cc6ada29eccf3ebd57b0337fa
     }
     let cur = res.cdate.applied - value >= 0 ? res.cdate.applied - value : 0;
     await updateApplied(res.cdate.date, cur);
